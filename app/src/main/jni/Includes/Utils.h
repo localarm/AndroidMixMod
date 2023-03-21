@@ -44,11 +44,17 @@ DWORD findLibrary(const char *library) {
     return address;
 }
 
+#define getAbsoluteAddressStr(libraryName, relativeAddr) getAbsoluteAddress(libraryName, string2Offset(OBFUSCATE(relativeAddr)))
+
 DWORD getAbsoluteAddress(const char *libraryName, DWORD relativeAddr) {
     libBase = findLibrary(libraryName);
     if (libBase == 0)
         return 0;
     return (reinterpret_cast<DWORD>(libBase + relativeAddr));
+}
+
+void* getSymAddress(const char *libraryName, char* symName) {
+    return dlsym(dlopen(libraryName, 4), symName);
 }
 
 

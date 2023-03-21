@@ -91,7 +91,6 @@ void CheckOverlayPermission(JNIEnv *env, jclass thiz, jobject ctx){
         jmethodID canDraw =env->GetStaticMethodID(Settings, OBFUSCATE("canDrawOverlays"), OBFUSCATE("(Landroid/content/Context;)Z"));
         if (!env->CallStaticBooleanMethod(Settings, canDraw, ctx)){
             Toast(env,ctx,OBFUSCATE("Overlay permission is required in order to show mod menu."),1);
-            Toast(env,ctx,OBFUSCATE("Overlay permission is required in order to show mod menu."),1);
             startActivityPermisson(env, ctx);
 
             pthread_t ptid;
@@ -109,19 +108,19 @@ void CheckOverlayPermission(JNIEnv *env, jclass thiz, jobject ctx){
 
 void Init(JNIEnv *env, jobject thiz, jobject ctx, jobject title, jobject subtitle){
     //Set sub title
-    setText(env, title, OBFUSCATE("<b>Modded by (yourname)</b>"));
+    setText(env, title, OBFUSCATE("<b>Hearthstone MixMod</b>"));
 
     //Set sub title
     setText(env, subtitle, OBFUSCATE("<b><marquee><p style=\"font-size:30\">"
-                                     "<p style=\"color:green;\">Modded by LGL</p> | "
-                                     "https://github.com/LGLTeam | Lorem Ipsum is simply dummy text of the printing and typesetting</p>"
+                                     "<p style=\"color:green;\">Hearthstone MixMod</p> | "
+                                     "https://t.me/HsMixMod | Official telegram channel for updates</p>"
                                      "</marquee></b>"));
 
     //Dialog Example
     //setDialog(ctx,env,OBFUSCATE("Title"),OBFUSCATE("Message Example"));
 
     //Toast Example
-    Toast(env,ctx,OBFUSCATE("Modded by YOU"),ToastLength::LENGTH_LONG);
+    //Toast(env,ctx,OBFUSCATE("Modded by YOU"),ToastLength::LENGTH_LONG);
 
     initValid = true;
 }

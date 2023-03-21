@@ -4,7 +4,7 @@ include $(CLEAR_VARS)
 # Here is the name of your lib.
 # When you change the lib name, change also on System.loadLibrary("") under OnCreate method on StaticActivity.java
 # Both must have same name
-LOCAL_MODULE    := MyLibName
+LOCAL_MODULE    := MixMod
 
 # -std=c++17 is required to support AIDE app with NDK
 LOCAL_CFLAGS := -w -s -Wno-error=format-security -fvisibility=hidden -fpermissive -fexceptions
@@ -18,15 +18,15 @@ LOCAL_C_INCLUDES += $(LOCAL_PATH)
 
 # Here you add the cpp file to compile
 LOCAL_SRC_FILES := Main.cpp \
-	Substrate/hde64.c \
-	Substrate/SubstrateDebug.cpp \
-	Substrate/SubstrateHook.cpp \
-	Substrate/SubstratePosixMemory.cpp \
-	Substrate/SymbolFinder.cpp \
-	KittyMemory/KittyMemory.cpp \
-	KittyMemory/MemoryPatch.cpp \
+    Substrate/hde64.c \
+    Substrate/SubstrateDebug.cpp \
+    Substrate/SubstrateHook.cpp \
+    Substrate/SubstratePosixMemory.cpp \
+    Substrate/SymbolFinder.cpp \
+    KittyMemory/KittyMemory.cpp \
+    KittyMemory/MemoryPatch.cpp \
     KittyMemory/MemoryBackup.cpp \
     KittyMemory/KittyUtils.cpp \
-	And64InlineHook/And64InlineHook.cpp \
+    And64InlineHook/And64InlineHook.cpp \
 
 include $(BUILD_SHARED_LIBRARY)
