@@ -1,0 +1,152 @@
+name: AndroidMixMod workflow
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v3
+      - name: set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+          cache: gradle
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
+        with:
+          gradle-version: 7.5.1
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v2
+      - name: Setup NDK
+        uses: nttld/setup-ndk@v1
+        id: setup-ndk
+        with:
+          ndk-version: r25c
+          local-cache: true
+      - name: Install dotnet runtime
+        uses: awalsh128/cache-apt-pkgs-action@latest
+        with:
+          packages: dotnet-runtime-6.0
+          version: 1.0
+      - name: Download hearthstone apk
+        run: |
+          repo_dir=$(pwd)
+          mkdir ../downloads/
+          cd ../downloads/
+          wget https://github.com/DeNcHiK3713/ApkCliDownloader/releases/latest/download/ApkCliDownloader-net6.0-linux-x64.zip -O ApkCliDownloader.zip
+          unzip ApkCliDownloader.zip -d ApkCliDownloader
+          chmod +x ./ApkCliDownloader/ApkCliDownloader
+          old_apk_name=$(./ApkCliDownloader/ApkCliDownloader -e "${{ secrets.EMAIL }}" -d ${{ secrets.DEVICE_ID }} -ua "${{ secrets.USER_AGENT }}" -c ${{ secrets.COUNTRY }} -t "${{ secrets.TOKEN }}" -a "com.blizzard.wtcg.hearthstone" -o ./)
+          apk_name=${old_apk_name/com.blizzard.wtcg.hearthstone_/HearthstoneMixMod_}
+          mixmod_apk_name=${apk_name/Hearthstone_/HearthstoneMixMod_}
+          mv ${old_apk_name} ${apk_name}
+          echo "apk_name=${apk_name}" >> $GITHUB_ENV
+          echo "mixmod_apk_name=${mixmod_apk_name}" >> $GITHUB_ENV
+          apk_folder_name=${apk_name%.*}
+          echo "apk_folder_name=${apk_folder_name}" >> $GITHUB_ENV
+          echo "apk_version=${apk_folder_name#*_}" >> $GITHUB_ENV
+          cd ${repo_dir}
+      - name: Download Apktool
+        run: wget $(jq -r '.assets | first | .browser_download_url' <<< $(curl --silent https://api.github.com/repos/iBotPeaches/Apktool/releases/latest)) -O ../downloads/apktool.jar
+      - name: Decompile hearthstone apk
+        run: |
+          repo_dir=$(pwd)
+          cd ../downloads/
+          java -jar apktool.jar d ${{ env.apk_name }} -o ${{ env.apk_folder_name }}
+          cd ${repo_dir}
+      - name: Modify hearthstone apk
+        run: |
+          repo_dir=$(pwd)
+          cd ../downloads/${{ env.apk_folder_name }}/
+          git apply ${repo_dir}/0001-AndroidMixMod.patch
+          cd ${repo_dir}
+      - name: Download Il2CppDumper
+        run: |
+          repo_dir=$(pwd)
+          cd ../downloads/
+          wget $(jq -r '.assets[] | select(.name | contains("net6") and (contains("win") | not)) | .browser_download_url' <<< $(curl --silent https://api.github.com/repos/Perfare/Il2CppDumper/releases/latest)) -O ./Il2CppDumper.zip
+          unzip Il2CppDumper.zip -d Il2CppDumper
+          sed -i "s/\"GenerateDummyDll\": true/\"GenerateDummyDll\": false/" ./Il2CppDumper/config.json
+          sed -i "s/\"RequireAnyKey\": true/\"RequireAnyKey\": false/" ./Il2CppDumper/config.json
+          cd ${repo_dir}
+      - name: Download Generator
+        run: |
+          repo_dir=$(pwd)
+          cd ../downloads/
+          wget https://github.com/DeNcHiK3713/Generator/releases/latest/download/Generator-net6.0-linux-x64.zip -O ./Generator.zip
+          unzip Generator.zip -d Generator
+          chmod +x ./Generator/Generator
+          cd ${repo_dir}
+      - name: Dump with Il2CppDumper
+        run: |
+          repo_dir=$(pwd)
+          cd ../downloads/
+          mkdir arm64-v8a
+          dotnet ./Il2CppDumper/Il2CppDumper.dll ./${{ env.apk_folder_name }}/lib/arm64-v8a/libil2cpp.so ./${{ env.apk_folder_name }}/assets/bin/Data/Managed/Metadata/global-metadata.dat ./arm64-v8a/
+          mkdir armeabi-v7a
+          dotnet ./Il2CppDumper/Il2CppDumper.dll ./${{ env.apk_folder_name }}/lib/armeabi-v7a/libil2cpp.so ./${{ env.apk_folder_name }}/assets/bin/Data/Managed/Metadata/global-metadata.dat ./armeabi-v7a/
+          cp ./arm64-v8a/il2cpp.h ${repo_dir}/app/src/main/jni/Includes/
+          sed -i "s/std\(in\|out\|err\)/_std\1/g" ${repo_dir}/app/src/main/jni/Includes/il2cpp.h
+          cd ${repo_dir}
+      - name: Generate offsets
+        run: |
+          repo_dir=$(pwd)
+          cd ../downloads/
+          echo "#ifdef __aarch64__" > ${repo_dir}/app/src/main/jni/Includes/Offsets.h
+          ./Generator/Generator ${repo_dir}/OffsetsTemplate.json ./arm64-v8a/script.json ./${{ env.apk_folder_name }}/lib/arm64-v8a/libil2cpp.so ARM64 >> ${repo_dir}/app/src/main/jni/Includes/Offsets.h
+          echo -e "#else\n" >> ${repo_dir}/app/src/main/jni/Includes/Offsets.h
+          ./Generator/Generator ${repo_dir}/OffsetsTemplate.json ./armeabi-v7a/script.json ./${{ env.apk_folder_name }}/lib/armeabi-v7a/libil2cpp.so ARM >> ${repo_dir}/app/src/main/jni/Includes/Offsets.h
+          echo "#endif" >> ${repo_dir}/app/src/main/jni/Includes/Offsets.h
+          cd ${repo_dir}
+      - name: Commit changes
+        id: git_auto_commit
+        uses: stefanzweifel/git-auto-commit-action@v4
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+      - name: Build with Gradle
+        run: ./gradlew build
+        env:
+          ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
+      - name: Decompile apk
+        run: |
+          repo_dir=$(pwd)
+          cd ../downloads/
+          java -jar apktool.jar d ${repo_dir}/app/build/outputs/apk/release/app-release.apk -o MixMod
+          cd ${repo_dir}
+      - name: Modify hearthstone apk
+        run: |
+          repo_dir=$(pwd)
+          cd ../downloads/
+          cp -R ./MixMod/smali/* ./${{ env.apk_folder_name }}/smali/
+          cp -R ./MixMod/lib/* ./${{ env.apk_folder_name }}/lib/
+          cd ${repo_dir}
+      - name: Recompile hearthstone apk
+        run: |
+          repo_dir=$(pwd)
+          cd ../downloads/
+          mkdir ../Release/
+          java -jar apktool.jar b ${{ env.apk_folder_name }} -o ../Release/${{ env.mixmod_apk_name }}
+          cd ${repo_dir}
+      - name: Signing hearthstone apk
+        uses: kevin-david/zipalign-sign-android-release@v1.1
+        id: sign_app
+        with:
+          releaseDirectory: ../Release/
+          signingKeyBase64: ${{ secrets.SIGNING_KEY }}
+          alias: ${{ secrets.ALIAS }}
+          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
+          keyPassword: ${{ secrets.KEY_PASSWORD }}
+          zipAlign: true
+      - name: Prepare to release
+        run: |
+          mkdir ../Release/signed/
+          mv ${{steps.sign_app.outputs.signedReleaseFile}} ../Release/signed/${{ env.mixmod_apk_name }}
+      - uses: "ncipollo/release-action@v1"
+        with:
+          tag: "${{ env.apk_version }}"
+          name: "AndroidMixMod"
+          artifacts: "../Release/signed/${{ env.mixmod_apk_name }}"
