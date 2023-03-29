@@ -566,6 +566,7 @@ jobjectArray GetFeatureList(JNIEnv *env, jobject context) {
 
     const char *features[] = {
             OBFUSCATE("Category_Global"), //Not counted
+            OBFUSCATE("26_Toggle_Игнорировать вырезы экрана"),
             OBFUSCATE("0_Toggle_Ускорение анимации"),
             OBFUSCATE("25_Toggle_Ускорение только в игре"),
             OBFUSCATE("1_SeekBar_Cкорость_100_800"),
@@ -719,6 +720,9 @@ void Changes(JNIEnv *env, jclass clazz, jobject obj,
             if (gameLoaded) {
                 Time_set_timeScale(originalTimeScale);
             }
+            break;
+        case 26:
+            PATCH_LIB_SWITCH("libunity.so", Unity_AndroidRenderOutsideSafeArea_Offset, "31", boolean);
             break;
     }
 }

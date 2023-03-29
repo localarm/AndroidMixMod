@@ -1,15 +1,15 @@
-From a18231509088b7235ea69d04236a83e565c160f0 Mon Sep 17 00:00:00 2001
-Date: Tue, 21 Mar 2023 17:49:13 +0300
+From d294fac627af905ce53be7c0683154b509419f56 Mon Sep 17 00:00:00 2001
+Date: Wed, 29 Mar 2023 14:26:04 +0300
 Subject: [PATCH] AndroidMixMod
 
 ---
  AndroidManifest.xml                           |  2 ++
- apktool.yml                                   |  3 +-
- assets/bin/Data/boot.config                   |  2 +-
- .../BasePackageValidator.smali                |  3 +-
- .../blizzard/wtcg/hearthstone/FileUtils.smali | 31 ++++++++++++++-----
- .../hearthstone/HearthstoneActivity.smali     |  5 +++
- 6 files changed, 36 insertions(+), 10 deletions(-)
+ apktool.yml                                   |  2 +-
+ assets/bin/Data/boot.config                   |  1 +
+ .../BasePackageValidator.smali                |  2 +-
+ .../blizzard/wtcg/hearthstone/FileUtils.smali | 19 ++++++++++++++++++-
+ .../hearthstone/HearthstoneActivity.smali     |  4 ++++
+ 6 files changed, 27 insertions(+), 3 deletions(-)
 
 diff --git a/AndroidManifest.xml b/AndroidManifest.xml
 index 276b3d6..9332fc8 100644
@@ -26,7 +26,7 @@ index 276b3d6..9332fc8 100644
          <meta-data android:name="com.blizzard.wtcg.hearthstone.push.SwrveSandboxId" android:value="@string/swrve_sandbox_id"/>
          <meta-data android:name="com.blizzard.wtcg.hearthstone.push.SwrvePublicId" android:value="@string/swrve_public_global_id"/>
 diff --git a/apktool.yml b/apktool.yml
-index f8034ff..e7eed99 100644
+index f8034ff..d7814d5 100644
 --- a/apktool.yml
 +++ b/apktool.yml
 @@ -54,7 +54,7 @@ packageInfo:
@@ -38,24 +38,17 @@ index f8034ff..e7eed99 100644
    targetSdkVersion: '31'
  sharedLibrary: false
  sparseResources: false
-@@ -102,3 +102,4 @@ version: 2.6.1
- versionInfo:
-   versionCode: '16878800'
-   versionName: 25.6.168788
-+
 diff --git a/assets/bin/Data/boot.config b/assets/bin/Data/boot.config
-index 75aff42..7996c5e 100644
+index d2cc9a1..f67b8a4 100644
 --- a/assets/bin/Data/boot.config
 +++ b/assets/bin/Data/boot.config
-@@ -2,5 +2,5 @@ wait-for-native-debugger=0
- vr-enabled=0
+@@ -3,3 +3,4 @@ vr-enabled=0
  hdr-display-enabled=0
  androidStartInFullscreen=1
--androidRenderOutsideSafeArea=0
-+androidRenderOutsideSafeArea=1
- buildDate=638138653810829874
++androidRenderOutsideSafeAre1=1
+ androidRenderOutsideSafeArea=0
 diff --git a/smali/com/blizzard/mobile/auth/internal/packagevalidator/BasePackageValidator.smali b/smali/com/blizzard/mobile/auth/internal/packagevalidator/BasePackageValidator.smali
-index 180c6b9..aeb7656 100644
+index 180c6b9..08f73e4 100644
 --- a/smali/com/blizzard/mobile/auth/internal/packagevalidator/BasePackageValidator.smali
 +++ b/smali/com/blizzard/mobile/auth/internal/packagevalidator/BasePackageValidator.smali
 @@ -254,7 +254,7 @@
@@ -67,66 +60,45 @@ index 180c6b9..aeb7656 100644
  
      if-eqz v3, :cond_0
  
-@@ -324,3 +324,4 @@
- 
-     throw p1
- .end method
-+
 diff --git a/smali/com/blizzard/wtcg/hearthstone/FileUtils.smali b/smali/com/blizzard/wtcg/hearthstone/FileUtils.smali
-index a7e3be8..c082381 100644
+index a7e3be8..7ef005a 100644
 --- a/smali/com/blizzard/wtcg/hearthstone/FileUtils.smali
 +++ b/smali/com/blizzard/wtcg/hearthstone/FileUtils.smali
-@@ -1192,20 +1192,36 @@
+@@ -1192,7 +1192,23 @@
  .end method
  
  .method public static GetInternalFilesDir()Ljava/io/File;
 -    .locals 1
 +    .locals 2
++
++    invoke-static {}, Lcom/blizzard/wtcg/hearthstone/HearthstoneApplication;->getInstance()Lcom/blizzard/wtcg/hearthstone/HearthstoneApplication;
++
++    move-result-object v0
++
++    invoke-virtual {v0}, Lcom/blizzard/wtcg/hearthstone/HearthstoneApplication;->getApplicationContext()Landroid/content/Context;
++
++    move-result-object v0
++
++    const/4 v1, 0x0
++
++    invoke-virtual {v0, v1}, Landroid/content/Context;->getExternalFilesDir(Ljava/lang/String;)Ljava/io/File;
++
++    move-result-object v0
++
++    if-nez v0, :cond_0
  
      invoke-static {}, Lcom/blizzard/wtcg/hearthstone/HearthstoneApplication;->getInstance()Lcom/blizzard/wtcg/hearthstone/HearthstoneApplication;
--
-+    
+ 
+@@ -1206,6 +1222,7 @@
+ 
      move-result-object v0
--
-+    
-+    invoke-virtual {v0}, Lcom/blizzard/wtcg/hearthstone/HearthstoneApplication;->getApplicationContext()Landroid/content/Context;
-+    
-+    move-result-object v0
-+    
-+    const/4 v1, 0x0
-+    
-+    invoke-virtual {v0, v1}, Landroid/content/Context;->getExternalFilesDir(Ljava/lang/String;)Ljava/io/File;
-+    
-+    move-result-object v0
-+    
-+    if-nez v0, :cond_0
-+    
-+    invoke-static {}, Lcom/blizzard/wtcg/hearthstone/HearthstoneApplication;->getInstance()Lcom/blizzard/wtcg/hearthstone/HearthstoneApplication;
-+    
-+    move-result-object v0
-+    
-     invoke-virtual {v0}, Landroid/app/Application;->getApplicationContext()Landroid/content/Context;
--
-+    
-     move-result-object v0
--
-+    
-     invoke-virtual {v0}, Landroid/content/Context;->getFilesDir()Ljava/io/File;
--
-+    
-     move-result-object v0
--
+ 
 +    :cond_0
      return-object v0
  .end method
  
-@@ -2628,3 +2644,4 @@
-     :goto_0
-     return-void
- .end method
-+
 diff --git a/smali/com/blizzard/wtcg/hearthstone/HearthstoneActivity.smali b/smali/com/blizzard/wtcg/hearthstone/HearthstoneActivity.smali
-index 59be1a8..0433d1d 100644
+index 59be1a8..547ca13 100644
 --- a/smali/com/blizzard/wtcg/hearthstone/HearthstoneActivity.smali
 +++ b/smali/com/blizzard/wtcg/hearthstone/HearthstoneActivity.smali
 @@ -255,6 +255,10 @@
@@ -140,11 +112,6 @@ index 59be1a8..0433d1d 100644
      invoke-super {p0, p1}, Lcom/unity3d/player/HearthstoneUnityPlayerActivity;->onCreate(Landroid/os/Bundle;)V
  
      sput-object p0, Lcom/blizzard/wtcg/hearthstone/HearthstoneActivity;->s_activity:Landroid/app/Activity;
-@@ -565,3 +569,4 @@
- 
-     return-void
- .end method
-+
 -- 
 2.40.0.windows.1
 
