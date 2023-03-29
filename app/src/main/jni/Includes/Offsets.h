@@ -85,6 +85,7 @@
 #define System_String_Format_Offset "0x44AE6A0"
 #define Entity_LoadCard_Offset "0x2EBBEB0"
 #define EntityBase_HasTag_Offset "0x2EB5E2C"
+#define Unity_AndroidRenderOutsideSafeArea_Offset "0x1226D4B"
 #else
 
 #define HearthstoneApplication_Awake_Offset "0x50889F0"
@@ -173,4 +174,5 @@
 #define System_String_Format_Offset "0x365AEB4"
 #define Entity_LoadCard_Offset "0x1BF8598"
 #define EntityBase_HasTag_Offset "0x1BF08C4"
+#define Unity_AndroidRenderOutsideSafeArea_Offset "0xE58DD7"
 #endif
