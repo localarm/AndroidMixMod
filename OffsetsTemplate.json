@@ -80,14 +80,14 @@
   {
     "$type": "Generator.OffsetLines.TextLine, Generator",
     "Section": 0,
-    "Text": "Blizzard_T5_Core_Map_int_SharedPlayerInfo_ContainsKey_Offset",
-    "Name": "Blizzard.T5.Core.Map<int, SharedPlayerInfo>$$ContainsKey"
+    "Text": "Blizzard_T5_Core_Map_int_object_ContainsKey_Offset",
+    "Name": "Blizzard.T5.Core.Map<int, object>$$ContainsKey"
   },
   {
     "$type": "Generator.OffsetLines.TextLine, Generator",
     "Section": 0,
-    "Text": "Blizzard_T5_Core_Map_int_SharedPlayerInfo_get_Item_Offset",
-    "Name": "Blizzard.T5.Core.Map<int, SharedPlayerInfo>$$get_Item"
+    "Text": "Blizzard_T5_Core_Map_int_object_get_Item_Offset",
+    "Name": "Blizzard.T5.Core.Map<int, object>$$get_Item"
   },
   {
     "$type": "Generator.OffsetLines.TextLine, Generator",

@@ -182,17 +182,17 @@ void UpdateCurrentOpponent(int opponentPlayerId) {
         playerLeaderboardManagerCurrentOpponent_gchandle = -1;
     }
     auto gameState = il2cpp::GameState_Get();
-    auto playerInfoMap = il2cpp::GameState_GetPlayerInfoMap(gameState);
+    auto playerInfoMap = reinterpret_cast<Blizzard_T5_Core_Map_TKey__TValue__o *>(il2cpp::GameState_GetPlayerInfoMap(gameState));
     if (gameState == NULL ||
-        !il2cpp::Blizzard_T5_Core_Map_int_SharedPlayerInfo_ContainsKey(playerInfoMap,
+        !il2cpp::Blizzard_T5_Core_Map_int_object_ContainsKey(playerInfoMap,
                                                                        opponentPlayerId,
                                                                        *il2cpp::Method_Blizzard_T5_Core_Map_int_SharedPlayerInfo_ContainsKey)) {
         playerLeaderboardManagerCurrentOpponent = NULL;
         return;
     }
-    auto id = il2cpp::Blizzard_T5_Core_Map_int_SharedPlayerInfo_get_Item(playerInfoMap,
+    auto id = reinterpret_cast<SharedPlayerInfo_o *>(il2cpp::Blizzard_T5_Core_Map_int_object_get_Item(playerInfoMap,
                                                                          opponentPlayerId,
-                                                                         *il2cpp::Method_Blizzard_T5_Core_Map_int_SharedPlayerInfo_get_Item)->fields.m_gameAccountId;
+                                                                         *il2cpp::Method_Blizzard_T5_Core_Map_int_SharedPlayerInfo_get_Item))->fields.m_gameAccountId;
     if (id == NULL) {
         playerLeaderboardManagerCurrentOpponent = NULL;
         return;
@@ -209,16 +209,16 @@ BnetPlayer_o *GetSelectedOpponent(PlayerLeaderboardCard_o *_this) {
     auto opponentPlayerId = il2cpp::EntityBase_GetTag(
             reinterpret_cast<EntityBase_o *>(_this->fields.m_playerHeroEntity), 30);
     auto gameState = il2cpp::GameState_Get();
-    auto playerInfoMap = il2cpp::GameState_GetPlayerInfoMap(gameState);
+    auto playerInfoMap = reinterpret_cast<Blizzard_T5_Core_Map_TKey__TValue__o *>(il2cpp::GameState_GetPlayerInfoMap(gameState));
     if (gameState == NULL ||
-        !il2cpp::Blizzard_T5_Core_Map_int_SharedPlayerInfo_ContainsKey(playerInfoMap,
+        !il2cpp::Blizzard_T5_Core_Map_int_object_ContainsKey(playerInfoMap,
                                                                        opponentPlayerId,
                                                                        *il2cpp::Method_Blizzard_T5_Core_Map_int_SharedPlayerInfo_ContainsKey)) {
         return NULL;
     }
-    auto id = il2cpp::Blizzard_T5_Core_Map_int_SharedPlayerInfo_get_Item(playerInfoMap,
+    auto id = reinterpret_cast<SharedPlayerInfo_o *>(il2cpp::Blizzard_T5_Core_Map_int_object_get_Item(playerInfoMap,
                                                                          opponentPlayerId,
-                                                                         *il2cpp::Method_Blizzard_T5_Core_Map_int_SharedPlayerInfo_get_Item)->fields.m_gameAccountId;
+                                                                         *il2cpp::Method_Blizzard_T5_Core_Map_int_SharedPlayerInfo_get_Item))->fields.m_gameAccountId;
     if (id == NULL) {
         return NULL;
     }
@@ -524,14 +524,14 @@ void *hack_thread(void *) {
             GameState_o *_this)>(getAbsoluteAddressStr(targetLibName,
                                                        GameState_GetPlayerInfoMap_Offset));
 
-    il2cpp::Blizzard_T5_Core_Map_int_SharedPlayerInfo_ContainsKey = reinterpret_cast<bool (*)(
-            Blizzard_T5_Core_Map_int__SharedPlayerInfo__o *_this, int key,
+    il2cpp::Blizzard_T5_Core_Map_int_object_ContainsKey = reinterpret_cast<bool (*)(
+            Blizzard_T5_Core_Map_TKey__TValue__o *_this, int key,
             const MethodInfo *method)>(getAbsoluteAddressStr(targetLibName,
-                                                             Blizzard_T5_Core_Map_int_SharedPlayerInfo_ContainsKey_Offset));
-    il2cpp::Blizzard_T5_Core_Map_int_SharedPlayerInfo_get_Item = reinterpret_cast<SharedPlayerInfo_o *(*)(
-            Blizzard_T5_Core_Map_int__SharedPlayerInfo__o *_this, int key,
+                                                             Blizzard_T5_Core_Map_int_object_ContainsKey_Offset));
+    il2cpp::Blizzard_T5_Core_Map_int_object_get_Item = reinterpret_cast<Il2CppObject *(*)(
+            Blizzard_T5_Core_Map_TKey__TValue__o *_this, int key,
             const MethodInfo *method)>(getAbsoluteAddressStr(targetLibName,
-                                                             Blizzard_T5_Core_Map_int_SharedPlayerInfo_get_Item_Offset));
+                                                             Blizzard_T5_Core_Map_int_object_get_Item_Offset));
 
     il2cpp::EntityBase_HasTag = reinterpret_cast<bool (*)(EntityBase_o *_this,
                                                           int tag)>(getAbsoluteAddressStr(

@@ -146,12 +146,12 @@ namespace il2cpp {
     Blizzard_T5_Core_Map_int__SharedPlayerInfo__o *
     (*GameState_GetPlayerInfoMap)(GameState_o *_this);
 
-    bool (*Blizzard_T5_Core_Map_int_SharedPlayerInfo_ContainsKey)(
-            Blizzard_T5_Core_Map_int__SharedPlayerInfo__o *_this, int key,
+    bool (*Blizzard_T5_Core_Map_int_object_ContainsKey)(
+            Blizzard_T5_Core_Map_TKey__TValue__o *_this, int key,
             const MethodInfo *method);
 
-    SharedPlayerInfo_o *(*Blizzard_T5_Core_Map_int_SharedPlayerInfo_get_Item)(
-            Blizzard_T5_Core_Map_int__SharedPlayerInfo__o *_this, int key,
+    Il2CppObject *(*Blizzard_T5_Core_Map_int_object_get_Item)(
+            Blizzard_T5_Core_Map_TKey__TValue__o *_this, int key,
             const MethodInfo *method);
 
     bool (*EntityBase_HasTag)(EntityBase_o *_this, int tag);
