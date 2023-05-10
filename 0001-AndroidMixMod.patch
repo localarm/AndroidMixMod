@@ -1,18 +1,17 @@
-From d294fac627af905ce53be7c0683154b509419f56 Mon Sep 17 00:00:00 2001
-Date: Wed, 29 Mar 2023 14:26:04 +0300
+From 6009869b1ed87bb0b0bf7b2ba9b1947b3069fe92 Mon Sep 17 00:00:00 2001
+Date: Wed, 10 May 2023 17:03:28 +0300
 Subject: [PATCH] AndroidMixMod
 
 ---
  AndroidManifest.xml                           |  2 ++
  apktool.yml                                   |  2 +-
- assets/bin/Data/boot.config                   |  1 +
  .../BasePackageValidator.smali                |  2 +-
  .../blizzard/wtcg/hearthstone/FileUtils.smali | 19 ++++++++++++++++++-
  .../hearthstone/HearthstoneActivity.smali     |  4 ++++
- 6 files changed, 27 insertions(+), 3 deletions(-)
+ 5 files changed, 26 insertions(+), 3 deletions(-)
 
 diff --git a/AndroidManifest.xml b/AndroidManifest.xml
-index 276b3d6..9332fc8 100644
+index 6927ef3..0aa1c50 100644
 --- a/AndroidManifest.xml
 +++ b/AndroidManifest.xml
 @@ -66,7 +66,9 @@
@@ -20,16 +19,16 @@ index 276b3d6..9332fc8 100644
      <uses-permission android:name="me.everything.badger.permission.BADGE_COUNT_READ"/>
      <uses-permission android:name="me.everything.badger.permission.BADGE_COUNT_WRITE"/>
 +    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
-     <application android:allowBackup="true" android:appComponentFactory="androidx.core.app.CoreComponentFactory" android:extractNativeLibs="true" android:fullBackupContent="@xml/appsflyer_backup_rules" android:icon="@mipmap/app_icon" android:label="@string/app_name" android:largeHeap="true" android:name="com.blizzard.wtcg.hearthstone.HearthstoneApplication" android:networkSecurityConfig="@xml/network_security_config" android:roundIcon="@mipmap/app_icon_round" android:supportsRtl="true">
+     <application android:allowBackup="true" android:appComponentFactory="androidx.core.app.CoreComponentFactory" android:extractNativeLibs="true" android:fullBackupContent="@xml/appsflyer_backup_rules" android:icon="@mipmap/app_icon" android:label="@string/app_name" android:largeHeap="true" android:name="com.blizzard.wtcg.hearthstone.HearthstoneApplication" android:networkSecurityConfig="@xml/network_security_config" android:roundIcon="@mipmap/app_icon_round" android:supportsRtl="true" android:usesCleartextTraffic="true">
 +        <service android:name="com.android.support.Launcher" android:enabled="true" android:exported="false" android:stopWithTask="true" />
          <meta-data android:name="com.blizzard.wtcg.hearthstone.Store" android:value="Google"/>
          <meta-data android:name="com.blizzard.wtcg.hearthstone.push.SwrveSandboxId" android:value="@string/swrve_sandbox_id"/>
          <meta-data android:name="com.blizzard.wtcg.hearthstone.push.SwrvePublicId" android:value="@string/swrve_public_global_id"/>
 diff --git a/apktool.yml b/apktool.yml
-index f8034ff..d7814d5 100644
+index 5febeb8..efd4294 100644
 --- a/apktool.yml
 +++ b/apktool.yml
-@@ -54,7 +54,7 @@ packageInfo:
+@@ -60,7 +60,7 @@ packageInfo:
    forcedPackageId: '127'
    renameManifestPackage: null
  sdkInfo:
@@ -38,21 +37,12 @@ index f8034ff..d7814d5 100644
    targetSdkVersion: '31'
  sharedLibrary: false
  sparseResources: false
-diff --git a/assets/bin/Data/boot.config b/assets/bin/Data/boot.config
-index d2cc9a1..f67b8a4 100644
---- a/assets/bin/Data/boot.config
-+++ b/assets/bin/Data/boot.config
-@@ -3,3 +3,4 @@ vr-enabled=0
- hdr-display-enabled=0
- androidStartInFullscreen=1
-+androidRenderOutsideSafeAre1=1
- androidRenderOutsideSafeArea=0
 diff --git a/smali/com/blizzard/mobile/auth/internal/packagevalidator/BasePackageValidator.smali b/smali/com/blizzard/mobile/auth/internal/packagevalidator/BasePackageValidator.smali
-index 180c6b9..08f73e4 100644
+index 396896b..fe54774 100644
 --- a/smali/com/blizzard/mobile/auth/internal/packagevalidator/BasePackageValidator.smali
 +++ b/smali/com/blizzard/mobile/auth/internal/packagevalidator/BasePackageValidator.smali
-@@ -254,7 +254,7 @@
- 
+@@ -297,7 +297,7 @@
+     .line 76
      invoke-virtual {v4, v3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
  
 -    move-result v3
@@ -61,10 +51,10 @@ index 180c6b9..08f73e4 100644
      if-eqz v3, :cond_0
  
 diff --git a/smali/com/blizzard/wtcg/hearthstone/FileUtils.smali b/smali/com/blizzard/wtcg/hearthstone/FileUtils.smali
-index a7e3be8..7ef005a 100644
+index 5c3af19..87177a2 100644
 --- a/smali/com/blizzard/wtcg/hearthstone/FileUtils.smali
 +++ b/smali/com/blizzard/wtcg/hearthstone/FileUtils.smali
-@@ -1192,7 +1192,23 @@
+@@ -1447,7 +1447,23 @@
  .end method
  
  .method public static GetInternalFilesDir()Ljava/io/File;
@@ -87,9 +77,9 @@ index a7e3be8..7ef005a 100644
 +
 +    if-nez v0, :cond_0
  
+     .line 85
      invoke-static {}, Lcom/blizzard/wtcg/hearthstone/HearthstoneApplication;->getInstance()Lcom/blizzard/wtcg/hearthstone/HearthstoneApplication;
- 
-@@ -1206,6 +1222,7 @@
+@@ -1462,6 +1478,7 @@
  
      move-result-object v0
  
@@ -98,20 +88,20 @@ index a7e3be8..7ef005a 100644
  .end method
  
 diff --git a/smali/com/blizzard/wtcg/hearthstone/HearthstoneActivity.smali b/smali/com/blizzard/wtcg/hearthstone/HearthstoneActivity.smali
-index 59be1a8..547ca13 100644
+index 466baac..156d51a 100644
 --- a/smali/com/blizzard/wtcg/hearthstone/HearthstoneActivity.smali
 +++ b/smali/com/blizzard/wtcg/hearthstone/HearthstoneActivity.smali
-@@ -255,6 +255,10 @@
- .method public onCreate(Landroid/os/Bundle;)V
+@@ -459,6 +459,10 @@
+ .method protected onCreate(Landroid/os/Bundle;)V
      .locals 2
  
 +    #### MixMod Start ####
 +    invoke-static {p0}, Lcom/android/support/Main;->Start(Landroid/content/Context;)V
 +    ####  MixMod End  ####
 +
+     .line 86
      invoke-super {p0, p1}, Lcom/unity3d/player/HearthstoneUnityPlayerActivity;->onCreate(Landroid/os/Bundle;)V
  
-     sput-object p0, Lcom/blizzard/wtcg/hearthstone/HearthstoneActivity;->s_activity:Landroid/app/Activity;
 -- 
-2.40.0.windows.1
+2.40.1.windows.1
 
