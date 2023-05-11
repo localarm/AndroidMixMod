@@ -214,7 +214,7 @@ namespace il2cpp {
 std::wstring_convert<std::codecvt_utf8_utf16<Il2CppChar>, Il2CppChar> utf16conv;
 
 std::string SS_to_str(System_String_o *SS) {
-    return utf16conv.to_bytes(reinterpret_cast<Il2CppChar *>(&SS->fields.m_firstChar));
+    return utf16conv.to_bytes(reinterpret_cast<Il2CppChar*>(&SS->fields._firstChar));
 }
 
 const char *SS_to_cstr(System_String_o *SS) {
