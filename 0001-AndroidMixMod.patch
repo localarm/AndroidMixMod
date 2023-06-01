@@ -1,6 +1,6 @@
-From 6009869b1ed87bb0b0bf7b2ba9b1947b3069fe92 Mon Sep 17 00:00:00 2001
-Date: Wed, 10 May 2023 17:03:28 +0300
-Subject: [PATCH] AndroidMixMod
+From 8733f55c7af8471449c1f2c69f656debe57f9bb2 Mon Sep 17 00:00:00 2001
+Date: Thu, 1 Jun 2023 15:00:47 +0300
+Subject: [PATCH] AndroidMixMod.
 
 ---
  AndroidManifest.xml                           |  2 ++
@@ -11,24 +11,24 @@ Subject: [PATCH] AndroidMixMod
  5 files changed, 26 insertions(+), 3 deletions(-)
 
 diff --git a/AndroidManifest.xml b/AndroidManifest.xml
-index 6927ef3..0aa1c50 100644
+index ba54a9a..15bed02 100644
 --- a/AndroidManifest.xml
 +++ b/AndroidManifest.xml
-@@ -66,7 +66,9 @@
-     <uses-permission android:name="com.oppo.launcher.permission.WRITE_SETTINGS"/>
-     <uses-permission android:name="me.everything.badger.permission.BADGE_COUNT_READ"/>
-     <uses-permission android:name="me.everything.badger.permission.BADGE_COUNT_WRITE"/>
+@@ -49,7 +49,9 @@
+     <uses-permission android:maxSdkVersion="22" android:name="android.permission.USE_CREDENTIALS"/>
+     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+     <uses-permission android:name="com.google.android.gms.permission.AD_ID"/>
 +    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
      <application android:allowBackup="true" android:appComponentFactory="androidx.core.app.CoreComponentFactory" android:extractNativeLibs="true" android:fullBackupContent="@xml/appsflyer_backup_rules" android:icon="@mipmap/app_icon" android:label="@string/app_name" android:largeHeap="true" android:name="com.blizzard.wtcg.hearthstone.HearthstoneApplication" android:networkSecurityConfig="@xml/network_security_config" android:roundIcon="@mipmap/app_icon_round" android:supportsRtl="true" android:usesCleartextTraffic="true">
 +        <service android:name="com.android.support.Launcher" android:enabled="true" android:exported="false" android:stopWithTask="true" />
          <meta-data android:name="com.blizzard.wtcg.hearthstone.Store" android:value="Google"/>
-         <meta-data android:name="com.blizzard.wtcg.hearthstone.push.SwrveSandboxId" android:value="@string/swrve_sandbox_id"/>
-         <meta-data android:name="com.blizzard.wtcg.hearthstone.push.SwrvePublicId" android:value="@string/swrve_public_global_id"/>
+         <service android:exported="false" android:label="@string/service_app_name" android:name="com.blizzard.agent.Service" android:process=":blizzardagentservice"/>
+         <meta-data android:name="com.blizzard.agent.notification_icon" android:resource="@drawable/ic_push_notification"/>
 diff --git a/apktool.yml b/apktool.yml
-index 5febeb8..efd4294 100644
+index 159ddad..37845b0 100644
 --- a/apktool.yml
 +++ b/apktool.yml
-@@ -60,7 +60,7 @@ packageInfo:
+@@ -58,7 +58,7 @@ packageInfo:
    forcedPackageId: '127'
    renameManifestPackage: null
  sdkInfo:
@@ -88,10 +88,10 @@ index 5c3af19..87177a2 100644
  .end method
  
 diff --git a/smali/com/blizzard/wtcg/hearthstone/HearthstoneActivity.smali b/smali/com/blizzard/wtcg/hearthstone/HearthstoneActivity.smali
-index 466baac..156d51a 100644
+index 79a2d96..6d8543d 100644
 --- a/smali/com/blizzard/wtcg/hearthstone/HearthstoneActivity.smali
 +++ b/smali/com/blizzard/wtcg/hearthstone/HearthstoneActivity.smali
-@@ -459,6 +459,10 @@
+@@ -532,6 +532,10 @@
  .method protected onCreate(Landroid/os/Bundle;)V
      .locals 2
  
@@ -99,7 +99,7 @@ index 466baac..156d51a 100644
 +    invoke-static {p0}, Lcom/android/support/Main;->Start(Landroid/content/Context;)V
 +    ####  MixMod End  ####
 +
-     .line 86
+     .line 92
      invoke-super {p0, p1}, Lcom/unity3d/player/HearthstoneUnityPlayerActivity;->onCreate(Landroid/os/Bundle;)V
  
 -- 
