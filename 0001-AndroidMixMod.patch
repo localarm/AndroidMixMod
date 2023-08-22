@@ -26,7 +26,7 @@ index 5febeb8..efd4294 100644
 @@ -60,2 +60,2 @@
 -  minSdkVersion: '24'
 +  minSdkVersion: '21'
-   targetSdkVersion: '31'
+   targetSdkVersion: '33'
 diff --git a/smali/com/blizzard/mobile/auth/internal/packagevalidator/BasePackageValidator.smali b/smali/com/blizzard/mobile/auth/internal/packagevalidator/BasePackageValidator.smali
 index 396896b..fe54774 100644
 --- a/smali/com/blizzard/mobile/auth/internal/packagevalidator/BasePackageValidator.smali
