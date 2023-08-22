@@ -98,6 +98,12 @@
   {
     "$type": "Generator.OffsetLines.TextLine, Generator",
     "Section": 0,
+    "Text": "Entity_GetController_Offset",
+    "Name": "Entity$$GetController"
+  },
+  {
+    "$type": "Generator.OffsetLines.TextLine, Generator",
+    "Section": 0,
     "Text": "System_String_IsNullOrEmpty_Offset",
     "Name": "System.String$$IsNullOrEmpty"
   },

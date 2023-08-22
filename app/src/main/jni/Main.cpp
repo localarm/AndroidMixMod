@@ -119,8 +119,8 @@ TAG_PREMIUM Entity_GetPremiumType(Entity_o *_this) {
         il2cpp::GameState_IsGameCreatedOrCreating(gameState)) {
         if (il2cpp::EntityBase_HasTag(reinterpret_cast<EntityBase_o *>(_this), 1932)) {
             if (diamond == CardState::All || diamond == CardState::OnlyMy &&
-                                             il2cpp::Entity_IsControlledByFriendlySidePlayer(
-                                                     _this)) {
+                                             il2cpp::Entity_GetController(_this) != NULL &&
+                                             il2cpp::Entity_IsControlledByFriendlySidePlayer(_this)) {
                 return TAG_PREMIUM::DIAMOND;
             }
             if (diamond == CardState::Disabled) {
@@ -129,16 +129,17 @@ TAG_PREMIUM Entity_GetPremiumType(Entity_o *_this) {
         }
         if (il2cpp::EntityBase_HasTag(reinterpret_cast<EntityBase_o *>(_this), 2589)) {
             if (signature == CardState::All || signature == CardState::OnlyMy &&
-                                               il2cpp::Entity_IsControlledByFriendlySidePlayer(
-                                                       _this)) {
+                                               il2cpp::Entity_GetController(_this) != NULL &&
+                                               il2cpp::Entity_IsControlledByFriendlySidePlayer(_this)) {
                 return TAG_PREMIUM::SIGNATURE;
             }
             if (signature == CardState::Disabled) {
                 return TAG_PREMIUM::NORMAL;
             }
         }
-        if (golden == CardState::All ||
-            golden == CardState::OnlyMy && il2cpp::Entity_IsControlledByFriendlySidePlayer(_this)) {
+        if (golden == CardState::All || golden == CardState::OnlyMy &&
+									    il2cpp::Entity_GetController(_this) != NULL &&
+									    il2cpp::Entity_IsControlledByFriendlySidePlayer(_this)) {
             return TAG_PREMIUM::GOLDEN;
         }
         if (golden == CardState::Disabled) {
@@ -539,6 +540,9 @@ void *hack_thread(void *) {
     il2cpp::Entity_IsControlledByFriendlySidePlayer = reinterpret_cast<bool (*)(
             Entity_o *_this)>(getAbsoluteAddressStr(targetLibName,
                                                     Entity_IsControlledByFriendlySidePlayer_Offset));
+    il2cpp::Entity_GetController = reinterpret_cast<Player_o *(*)(Entity_o *_this)>(
+													getAbsoluteAddressStr(targetLibName,
+                                                    Entity_GetController_Offset));
 
     il2cpp::System_String_IsNullOrEmpty = reinterpret_cast<bool (*)(
             System_String_o *value)>(getAbsoluteAddressStr(targetLibName,

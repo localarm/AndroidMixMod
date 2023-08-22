@@ -158,6 +158,8 @@ namespace il2cpp {
 
     bool (*Entity_IsControlledByFriendlySidePlayer)(Entity_o *_this);
 
+    Player_o *(*Entity_GetController)(Entity_o *_this);
+
     bool (*System_String_IsNullOrEmpty)(System_String_o *value);
 
     Network_o *(*Network_Get)();
