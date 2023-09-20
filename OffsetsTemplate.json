@@ -430,7 +430,7 @@
       "$type": "Generator.OffsetLines.RegexLine, Generator",
       "Section": 0,
       "Text": "TB_BaconShop_HandleGameOverWithTiming_Offset",
-      "Regex": "TB_BaconShop\\.<HandleGameOverWithTiming>d__\\d+\\$\\$MoveNext",
+      "Regex": "TB_BaconShop\\.<HandleGameOverWithTiming>d__\\d+\\$\\$MoveNext"
     },
     "CalledMethod": {
       "$type": "Generator.OffsetLines.TextLine, Generator",
@@ -446,7 +446,7 @@
       "$type": "Generator.OffsetLines.RegexLine, Generator",
       "Section": 0,
       "Text": "TB_BaconShop_PlayBobLineWithoutText_Offset",
-      "Regex": "TB_BaconShop\\.<PlayBobLineWithoutText>d__\\d+\\$\\$MoveNext",
+      "Regex": "TB_BaconShop\\.<PlayBobLineWithoutText>d__\\d+\\$\\$MoveNext"
     }
   },
   {
@@ -580,5 +580,11 @@
     "Section": 0,
     "Text": "EntityBase_HasTag_Offset",
     "Name": "EntityBase$$HasTag"
+  },
+  {
+    "$type": "Generator.OffsetLines.TextLine, Generator",
+    "Section": 0,
+    "Text": "UpdateUtils_GetAndroidStoreUrl_Offset",
+    "Name": "UpdateUtils$$GetAndroidStoreUrl"
   }
 ]

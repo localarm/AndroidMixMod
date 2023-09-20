@@ -211,6 +211,8 @@ namespace il2cpp {
     System_Guid_o (*System_Xml_XmlConvert_ToGuid)(System_String_o *s);
 
     System_String_o *(*System_Guid_ToString)(System_Guid_o *_this);
+
+    System_String_o *(*UpdateUtils_GetAndroidStoreUrl)(int store);
 };
 
 std::wstring_convert<std::codecvt_utf8_utf16<Il2CppChar>, Il2CppChar> utf16conv;

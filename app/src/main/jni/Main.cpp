@@ -388,6 +388,10 @@ PegasusShared_Platform_o *Network_GetPlatformBuilder(Network_o *_this) {
     return result;
 }
 
+System_String_o *UpdateUtils_GetAndroidStoreUrl(int store) {
+    return u"https://github.com/DeNcHiK3713/AndroidMixMod/releases/latest"_SS;
+}
+
 // we will run our hacks in a new thread so our while loop doesn't block process main thread
 void *hack_thread(void *) {
     LOGI(OBFUSCATE("pthread created"));
@@ -624,6 +628,9 @@ void *hack_thread(void *) {
 
     HOOK(Network_GetPlatformBuilder_Offset, Network_GetPlatformBuilder,
          il2cpp::Network_GetPlatformBuilder);
+
+    HOOK(UpdateUtils_GetAndroidStoreUrl_Offset, UpdateUtils_GetAndroidStoreUrl,
+         il2cpp::UpdateUtils_GetAndroidStoreUrl);
 
 //#if MatchingQueueTab_Update_Patch_Offset = "0"
     PATCH(MatchingQueueTab_Update_Patch_Offset, MatchingQueueTab_Update_Patch_Data);
