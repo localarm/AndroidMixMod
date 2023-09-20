@@ -24,7 +24,7 @@ index 5febeb8..efd4294 100644
 --- a/apktool.yml
 +++ b/apktool.yml
 @@ -60,2 +60,2 @@
--  minSdkVersion: '24'
+-  minSdkVersion: '28'
 +  minSdkVersion: '21'
    targetSdkVersion: '33'
 diff --git a/smali/com/blizzard/mobile/auth/internal/packagevalidator/BasePackageValidator.smali b/smali/com/blizzard/mobile/auth/internal/packagevalidator/BasePackageValidator.smali
