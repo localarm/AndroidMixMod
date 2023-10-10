@@ -25,7 +25,7 @@ jobs:
         uses: nttld/setup-ndk@v1
         id: setup-ndk
         with:
-          ndk-version: r25c
+          ndk-version: r26
           local-cache: true
       - name: Install dotnet runtime
         uses: awalsh128/cache-apt-pkgs-action@latest
