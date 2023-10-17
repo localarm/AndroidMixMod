@@ -34,7 +34,7 @@ index 396896b..fe54774 100644
 @@ -296,9 +296,9 @@
      const-string v4, "F7:83:85:9E:ED:6E:4A:40:A4:EB:D0:20:57:8D:36:E0:0A:62:CF:9C:F2:7D:A3:95:F7:7D:1D:73:A6:A9:A4:1F"
  
-     .line 76
+     .line 6
      invoke-virtual {v4, v3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
  
 -    move-result v3
@@ -79,17 +79,9 @@ diff --git a/smali/com/blizzard/wtcg/hearthstone/HearthstoneActivity.smali b/sma
 index 466baac..156d51a 100644
 --- a/smali/com/blizzard/wtcg/hearthstone/HearthstoneActivity.smali
 +++ b/smali/com/blizzard/wtcg/hearthstone/HearthstoneActivity.smali
-@@ -610,11 +610,15 @@
- .method protected onCreate(Landroid/os/Bundle;)V
+@@ -610,3 +610,7 @@
+ .method public onCreate(Landroid/os/Bundle;)V
      .locals 2
-     .annotation system Ldalvik/annotation/MethodParameters;
-         accessFlags = {
-             0x0
-         }
-         names = {
-             "savedInstanceState"
-         }
-     .end annotation
 +    #### MixMod Start ####
 +    invoke-static {p0}, Lcom/android/support/Main;->Start(Landroid/content/Context;)V
 +    ####  MixMod End  ####
