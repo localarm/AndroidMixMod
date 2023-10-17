@@ -586,23 +586,5 @@
     "Section": 0,
     "Text": "UpdateUtils_GetAndroidStoreUrl_Offset",
     "Name": "UpdateUtils$$GetAndroidStoreUrl"
-  },
-  {
-    "$type": "Generator.OffsetLines.TextLine, Generator",
-    "Section": 0,
-    "Text": "Actor_GetPremium_Offset",
-    "Name": "Actor$$GetPremium"
-  },
-  {
-    "$type": "Generator.OffsetLines.TextLine, Generator",
-    "Section": 0,
-    "Text": "Actor_DoesDiamondModelExistOnCardDef_Offset",
-    "Name": "Actor$$DoesDiamondModelExistOnCardDef"
-  },
-  {
-    "$type": "Generator.OffsetLines.TextLine, Generator",
-    "Section": 0,
-    "Text": "Actor_HasSignaturePortraitTexture_Offset",
-    "Name": "Actor$$HasSignaturePortraitTexture"
   }
 ]

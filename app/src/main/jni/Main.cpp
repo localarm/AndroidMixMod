@@ -154,46 +154,6 @@ void Entity_LoadCard(Entity_o *_this, System_String_o *cardId, Entity_LoadCardDa
     il2cpp::Entity_LoadCard(_this, cardId, data);
 }
 
-TAG_PREMIUM Actor_GetPremium(Actor_o *_this) {
-    auto gameMgr = il2cpp::GameMgr_Get();
-    auto gameState = il2cpp::GameState_Get();
-    if (gameMgr != NULL && !il2cpp::GameMgr_IsBattlegrounds(gameMgr) && gameState != NULL &&
-        il2cpp::GameState_IsGameCreatedOrCreating(gameState)) {
-        if (il2cpp::Actor_DoesDiamondModelExistOnCardDef(_this)) {
-            if (diamond == CardState::All || diamond == CardState::OnlyMy &&
-                                             _this->fields.m_entity != NULL &&
-                                             il2cpp::Entity_GetController(_this->fields.m_entity) != NULL &&
-                                             il2cpp::Entity_IsControlledByFriendlySidePlayer(_this->fields.m_entity)) {
-                return TAG_PREMIUM::DIAMOND;
-            }
-            if (diamond == CardState::Disabled) {
-                return TAG_PREMIUM::NORMAL;
-            }
-        }
-        if (il2cpp::Actor_HasSignaturePortraitTexture(_this)) {
-            if (signature == CardState::All || signature == CardState::OnlyMy &&
-                                               _this->fields.m_entity != NULL &&
-                                               il2cpp::Entity_GetController(_this->fields.m_entity) != NULL &&
-                                               il2cpp::Entity_IsControlledByFriendlySidePlayer(_this->fields.m_entity)) {
-                return TAG_PREMIUM::SIGNATURE;
-            }
-            if (signature == CardState::Disabled) {
-                return TAG_PREMIUM::NORMAL;
-            }
-        }
-        if (golden == CardState::All || golden == CardState::OnlyMy &&
-                                        _this->fields.m_entity != NULL &&
-                                        il2cpp::Entity_GetController(_this->fields.m_entity) != NULL &&
-                                        il2cpp::Entity_IsControlledByFriendlySidePlayer(_this->fields.m_entity)) {
-            return TAG_PREMIUM::GOLDEN;
-        }
-        if (golden == CardState::Disabled) {
-            return TAG_PREMIUM::NORMAL;
-        }
-    }
-    return il2cpp::Actor_GetPremium(_this);
-}
-
 void UpdateCurrentOpponent() {
     if (gameStateCurrentOpponent_gchandle != -1) {
         il2cpp::il2cpp_gchandle_free(gameStateCurrentOpponent_gchandle);
@@ -638,14 +598,6 @@ void *hack_thread(void *) {
             System_Guid_o *_this)>(getAbsoluteAddressStr(targetLibName,
                                                          System_Guid_ToString_Offset));
 
-    il2cpp::Actor_DoesDiamondModelExistOnCardDef = reinterpret_cast<bool (*)(
-            Actor_o* _this)>(getAbsoluteAddressStr(targetLibName,
-                                                   Actor_DoesDiamondModelExistOnCardDef_Offset));
-
-    il2cpp::Actor_HasSignaturePortraitTexture = reinterpret_cast<bool (*)(
-            Actor_o* _this)>(getAbsoluteAddressStr(targetLibName,
-                                                   Actor_HasSignaturePortraitTexture_Offset));
-
     HOOK(HearthstoneApplication_Awake_Offset, HearthstoneApplication_Awake,
          il2cpp::HearthstoneApplication_Awake);
 
@@ -679,8 +631,6 @@ void *hack_thread(void *) {
 
     HOOK(UpdateUtils_GetAndroidStoreUrl_Offset, UpdateUtils_GetAndroidStoreUrl,
          il2cpp::UpdateUtils_GetAndroidStoreUrl);
-
-    HOOK(Actor_GetPremium_Offset, Actor_GetPremium, il2cpp::Actor_GetPremium);
 
 //#if MatchingQueueTab_Update_Patch_Offset = "0"
     PATCH(MatchingQueueTab_Update_Patch_Offset, MatchingQueueTab_Update_Patch_Data);
