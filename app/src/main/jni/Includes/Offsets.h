@@ -87,9 +87,6 @@
 #define Entity_LoadCard_Offset "0x1CF32D0"
 #define EntityBase_HasTag_Offset "0x1CED388"
 #define UpdateUtils_GetAndroidStoreUrl_Offset "0x1E633FC"
-#define Actor_GetPremium_Offset "0x1BBB8CC"
-#define Actor_DoesDiamondModelExistOnCardDef_Offset "0x1BBF370"
-#define Actor_HasSignaturePortraitTexture_Offset "0x1BCF3D0"
 #define Unity_AndroidRenderOutsideSafeArea_Offset "0x144A1FD"
 #else
 
@@ -181,8 +178,5 @@
 #define Entity_LoadCard_Offset "0x14CBE90"
 #define EntityBase_HasTag_Offset "0x14C4214"
 #define UpdateUtils_GetAndroidStoreUrl_Offset "0x16B8E44"
-#define Actor_GetPremium_Offset "0x132FB78"
-#define Actor_DoesDiamondModelExistOnCardDef_Offset "0x133450C"
-#define Actor_HasSignaturePortraitTexture_Offset "0x134A224"
 #define Unity_AndroidRenderOutsideSafeArea_Offset "0xFD29A5"
 #endif
