@@ -8,7 +8,8 @@ Subject: [PATCH] AndroidMixMod
  .../BasePackageValidator.smali                |  2 +-
  .../blizzard/wtcg/hearthstone/FileUtils.smali | 19 ++++++++++++++++++-
  .../hearthstone/HearthstoneActivity.smali     |  4 ++++
- 5 files changed, 26 insertions(+), 3 deletions(-)
+ .../hearthstone/LoadingScreen.smali           | 22 ++++++++++++++++++++
+ 6 files changed, 50 insertions(+), 3 deletions(-)
 
 diff --git a/AndroidManifest.xml b/AndroidManifest.xml
 index 6927ef3..0aa1c50 100644
@@ -87,6 +88,39 @@ index 466baac..156d51a 100644
 +    ####  MixMod End  ####
 +
  
+diff --git a/smali/com/blizzard/wtcg/hearthstone/LoadingScreen.smali b/smali/com/blizzard/wtcg/hearthstone/LoadingScreen.smali
+index 949fbd8..1f639b3 100644
+--- a/smali/com/blizzard/wtcg/hearthstone/LoadingScreen.smali
++++ b/smali/com/blizzard/wtcg/hearthstone/LoadingScreen.smali
+@@ -834,4 +834,28 @@
+ .end method
+ 
+ .method public OpenAppStore()Z
++    .locals 3
++
++    new-instance v0, Landroid/content/Intent;
++
++    const-string v1, "https://github.com/DeNcHiK3713/AndroidMixMod/releases/latest"
++
++    invoke-static {v1}, Landroid/net/Uri;->parse(Ljava/lang/String;)Landroid/net/Uri;
++
++    move-result-object v1
++	
++    const-string v2, "android.intent.action.VIEW"
++
++    invoke-direct {v0, v2, v1}, Landroid/content/Intent;-><init>(Ljava/lang/String;Landroid/net/Uri;)V
++
++    iget-object v1, p0, Lcom/blizzard/wtcg/hearthstone/LoadingScreen;->_this:Landroid/app/Activity;
++
++    invoke-virtual {v1, v0}, Landroid/app/Activity;->startActivity(Landroid/content/Intent;)V
++	
++    const/4 v1, 0x1
++
++    return v1
++.end method
++
++.method public Orig_OpenAppStore()Z
+     .locals 14
 -- 
 2.40.1.windows.1
 
