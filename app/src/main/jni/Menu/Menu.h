@@ -41,28 +41,3 @@ jstring IconWebViewData(JNIEnv *env, jobject thiz) {
     //return env->NewStringUTF(OBFUSCATE_KEY("https://i.imgur.com/SujJ85j.gif", 'u'));
     return NULL;
 }
-
-jobjectArray SettingsList(JNIEnv *env, jobject activityObject) {
-    jobjectArray ret;
-
-    const char *features[] = {
-            OBFUSCATE("Category_Настройки"),
-            OBFUSCATE("-1_Toggle_Сохранять настройки"), //-1 is checked on Preferences.java
-            OBFUSCATE("-3_Toggle_Авторазмер по вертикали"),
-            OBFUSCATE("Category_Меню"),
-            OBFUSCATE("-6_Button_<font color='red'>Закрыть настройки</font>"),
-    };
-
-    int Total_Feature = (sizeof features /
-                         sizeof features[0]); //Now you dont have to manually update the number everytime;
-    ret = (jobjectArray)
-            env->NewObjectArray(Total_Feature, env->FindClass(OBFUSCATE("java/lang/String")),
-                                env->NewStringUTF(""));
-    int i;
-    for (i = 0; i < Total_Feature; i++)
-        env->SetObjectArrayElement(ret, i, env->NewStringUTF(features[i]));
-
-    settingsValid = true;
-
-    return (ret);
-}

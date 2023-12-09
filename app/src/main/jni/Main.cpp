@@ -14,6 +14,7 @@
 #include "Includes/Utils.h"
 #include "KittyMemory/MemoryPatch.h"
 #include "Menu/Setup.h"
+#include "Localization/Localizations.h"
 
 //Target lib here
 #define targetLibName OBFUSCATE("libil2cpp.so")
@@ -22,6 +23,10 @@
 #include "Includes/il2cpp.h"
 #include "Includes/Source.h"
 
+JavaVM *jvm;
+std::string language = "enUS";
+bool languageLoaded = false;
+bool useDefaultLanguage = true;
 bool timeScaleEnabled = false, timeScaleInGameOnlyEnabled = false, gameStarted = false, emoteSpamBlocker = false, disableThinkEmotes = false, copySelectedBattleTag = false, gameLoaded = false;
 float originalTimeScale = 1, timeScale = 1, m_lastEnemyEmoteTime;
 int emotesBeforeBlock = 0, m_lastPlayerId, m_chainedEnemyEmotes;
@@ -138,8 +143,8 @@ TAG_PREMIUM Entity_GetPremiumType(Entity_o *_this) {
             }
         }
         if (golden == CardState::All || golden == CardState::OnlyMy &&
-									    il2cpp::Entity_GetController(_this) != NULL &&
-									    il2cpp::Entity_IsControlledByFriendlySidePlayer(_this)) {
+                                        il2cpp::Entity_GetController(_this) != NULL &&
+                                        il2cpp::Entity_IsControlledByFriendlySidePlayer(_this)) {
             return TAG_PREMIUM::GOLDEN;
         }
         if (golden == CardState::Disabled) {
@@ -392,6 +397,29 @@ System_String_o *UpdateUtils_GetAndroidStoreUrl(int store) {
     return u"https://github.com/DeNcHiK3713/AndroidMixMod/releases/latest"_SS;
 }
 
+void Localization_SetPegLocaleName(Localization_o* _this, System_String_o* localeName) {
+    il2cpp::Localization_SetPegLocaleName(_this, localeName);
+    if (useDefaultLanguage) {
+        auto newLanguage = SS_to_str(localeName);
+        if (localization.find(newLanguage) == localization.end()) {
+            language = "enUS";
+        } else {
+            language = newLanguage;
+        }
+
+        if (jvm == NULL)
+        {
+            return;
+        }
+        JNIEnv *env;
+        jvm->GetEnv((void **) &env, JNI_VERSION_1_6);
+        jclass clazz = env->FindClass("com/android/support/Main");
+        jmethodID reloadFeaturesMethod = env->GetStaticMethodID(clazz, "ReloadFeatures", "()V") ;
+        env->CallStaticVoidMethod(clazz, reloadFeaturesMethod);
+    }
+    languageLoaded = true;
+}
+
 // we will run our hacks in a new thread so our while loop doesn't block process main thread
 void *hack_thread(void *) {
     LOGI(OBFUSCATE("pthread created"));
@@ -545,7 +573,7 @@ void *hack_thread(void *) {
             Entity_o *_this)>(getAbsoluteAddressStr(targetLibName,
                                                     Entity_IsControlledByFriendlySidePlayer_Offset));
     il2cpp::Entity_GetController = reinterpret_cast<Player_o *(*)(Entity_o *_this)>(
-													getAbsoluteAddressStr(targetLibName,
+                                                    getAbsoluteAddressStr(targetLibName,
                                                     Entity_GetController_Offset));
 
     il2cpp::System_String_IsNullOrEmpty = reinterpret_cast<bool (*)(
@@ -632,6 +660,12 @@ void *hack_thread(void *) {
     HOOK(UpdateUtils_GetAndroidStoreUrl_Offset, UpdateUtils_GetAndroidStoreUrl,
          il2cpp::UpdateUtils_GetAndroidStoreUrl);
 
+    il2cpp::Localization_GetLocaleName = reinterpret_cast<System_String_o *(*)()>(
+        getAbsoluteAddressStr(targetLibName, Localization_GetLocaleName_Offset));
+
+    HOOK(Localization_SetPegLocaleName_Offset, Localization_SetPegLocaleName,
+        il2cpp::Localization_SetPegLocaleName);
+
 //#if MatchingQueueTab_Update_Patch_Offset = "0"
     PATCH(MatchingQueueTab_Update_Patch_Offset, MatchingQueueTab_Update_Patch_Data);
 //#endif
@@ -656,6 +690,33 @@ void *hack_thread(void *) {
     return NULL;
 }
 
+jobjectArray SettingsList(JNIEnv *env, jobject activityObject) {
+    jobjectArray ret;
+
+    const char *features[] = {
+            "Category_Settings",
+            localization[language][SAVE_SETTINGS], //-1 is checked on Preferences.java
+            localization[language][AUTO_SIZE],
+            localization[language][IGNORE_SCREEN_CUTOUTS],
+            "Category_Menu",
+            localization[language][LANGUAGE],
+            localization[language][CLOSE_SETTINGS],
+    };
+
+    int Total_Feature = (sizeof features /
+                         sizeof features[0]); //Now you dont have to manually update the number everytime;
+    ret = (jobjectArray)
+            env->NewObjectArray(Total_Feature, env->FindClass(OBFUSCATE("java/lang/String")),
+                                env->NewStringUTF(""));
+    int i;
+    for (i = 0; i < Total_Feature; i++)
+        env->SetObjectArrayElement(ret, i, env->NewStringUTF(features[i]));
+
+    settingsValid = true;
+
+    return (ret);
+}
+
 // Do not change or translate the first text unless you know what you are doing
 // Assigning feature numbers is optional. Without it, it will automatically count for you, starting from 0
 // Assigned feature numbers can be like any numbers 1,3,200,10... instead in order 0,1,2,3,4,5...
@@ -667,42 +728,32 @@ jobjectArray GetFeatureList(JNIEnv *env, jobject context) {
     jobjectArray ret;
 
     const char *features[] = {
-            OBFUSCATE("Category_Global"), //Not counted
-            OBFUSCATE("26_Toggle_Игнорировать вырезы экрана"),
-            OBFUSCATE("0_Toggle_Ускорение анимации"),
-            OBFUSCATE("25_Toggle_Ускорение только в игре"),
-            OBFUSCATE("1_SeekBar_Cкорость_100_800"),
-            OBFUSCATE("Category_Gameplay"),
-            OBFUSCATE("2_Toggle_Пропуск представления героев"),
-            OBFUSCATE("3_Toggle_Заткнуть боба на полях сражений"),
-            OBFUSCATE("4_Toggle_Убрать ограничение на использование эмоций"),
-            OBFUSCATE("5_Toggle_Отключить рандом для эмоций"),
-            OBFUSCATE("6_Toggle_Блокировщик спама эмоциями"),
-            OBFUSCATE("7_InputValue_Количество эмоций"),
-            OBFUSCATE("8_Toggle_Отключить эмоции раздумья героев"),
-            OBFUSCATE(
-                    "9_Spinner_Изменения для золотых карт_Обычный режим,Все герои и карты будут золотыми,Все ваши герои и карты будут золотыми,Все герои и карты будут обычными"),
-            OBFUSCATE(
-                    "10_Spinner_Изменения для бриллиантовых карт_Обычный режим,Все герои и карты будут бриллиантовыми,Все ваши герои и карты будут бриллиантовыми,Все герои и карты будут обычными"),
-            OBFUSCATE(
-                    "21_Spinner_Изменения для сигнатурных карт_Обычный режим,Все герои и карты будут бриллиантовыми,Все ваши герои и карты будут сигнатурными,Все герои и карты будут обычными"),
-            OBFUSCATE("11_Toggle_Включить отображение ранга противника"),
-            /*OBFUSCATE("Category_Gifts"),
-            OBFUSCATE("12_Toggle_Включить эмулюцию GPS для Fireside Gathering"),
-            OBFUSCATE("13_InputValue_Широта"),
-            OBFUSCATE("14_InputValue_Долгота"),
-            OBFUSCATE("15_InputValue_Точность определения местоположения"),*/
-            OBFUSCATE(
-                    "16_Spinner_Настройки устройства_Стандартно,iPad,iPhone,Phone,Tablet,HuaweiPhone,PC,Mac,Вручную"),
-            OBFUSCATE("17_Spinner_Операционная система_PC,Mac,iOS,Android"),
-            OBFUSCATE("18_Spinner_Экран_Phone,MiniTablet,Tablet,PC"),
-            OBFUSCATE("19_InputText_Имя устройства"),
-            /*OBFUSCATE("Category_Others"),
-            OBFUSCATE("20_Toggle_Переворт карт в режиме зрителя"),*/
-            OBFUSCATE("Category_Shortcuts"),
-            OBFUSCATE("22_Button_Скопировать BattleTag"),
-            OBFUSCATE("23_Toggle_Копировать BattleTag на полях сражений"),
-            OBFUSCATE("24_Button_Симулировать отключение"),
+            "Category_Global",
+            localization[language][TIMESCALE_ENABLED],
+            localization[language][TIMESCALE_IN_GAME_ONLY],
+            localization[language][TIMESCALE],
+            "Category_Gameplay",
+            localization[language][SKIP_HERO_INTRO],
+            localization[language][SHUTUP_BOB],
+            localization[language][EXTENDED_BM],
+            localization[language][DISABLE_RANDOM_FOR_EMOTES],
+            localization[language][EMOTE_SPAM_BLOCKER],
+            localization[language][EMOTES_BEFORE_BLOCK],
+            localization[language][DISABLE_THINK_EMOTES],
+            localization[language][GOLDEN_TEXT],
+            localization[language][DIAMOND_TEXT],
+            localization[language][SIGNATURE_TEXT],
+            localization[language][SHOW_OPPONENT_RANK_IN_GAME],
+            localization[language][DEVICE_PRESET],
+            localization[language][OPERATING_SYSTEM],
+            localization[language][SCREEN_TEXT],
+            localization[language][DEVICE_NAME],
+            /*"Category_Others",
+            localization[language][MOVE_ENEMY_CARDS],*/
+            "Category_Shortcuts",
+            localization[language][COPY_BATTLETAG],
+            localization[language][COPY_BATTLETAG_ON_BATTLEGROUNDS],
+            localization[language][SIMULATE_DISCONNECT],
     };
 
     //Now you dont have to manually update the number everytime;
@@ -836,9 +887,41 @@ void Changes(JNIEnv *env, jclass clazz, jobject obj,
                 Time_set_timeScale(originalTimeScale);
             }
             break;
-        case 26:
+        case -11:
             PATCH_LIB_SWITCH("libunity.so", Unity_AndroidRenderOutsideSafeArea_Offset, "31",
                              boolean);
+            break;
+        case -10:
+            switch (value) {
+                case 0: {
+                    useDefaultLanguage = true;
+                    if (!languageLoaded) {
+                        break;
+                    }
+                    void *thread = il2cpp::il2cpp_thread_attach(il2cpp::il2cpp_domain_get());
+                    auto locale = il2cpp::Localization_GetLocaleName();
+                    if (locale == NULL) {
+                        language = "enUS";
+                        break;
+                    }
+                    auto newLanguage = SS_to_str(locale);
+                    if (localization.find(newLanguage) == localization.end()) {
+                        language = "enUS";
+                    } else {
+                        language = newLanguage;
+                    }
+                    il2cpp::il2cpp_thread_detach(thread);
+                    break;
+                }
+                case 1:
+                    useDefaultLanguage = false;
+                    language = "enUS";
+                    break;
+                case 2:
+                    useDefaultLanguage = false;
+                    language = "ruRU";
+                    break;
+            }
             break;
     }
 }
@@ -905,6 +988,7 @@ int RegisterMain(JNIEnv *env) {
 extern "C"
 JNIEXPORT jint JNICALL
 JNI_OnLoad(JavaVM *vm, void *reserved) {
+    jvm = vm;
     JNIEnv *env;
     vm->GetEnv((void **) &env, JNI_VERSION_1_6);
     if (RegisterMenu(env) != 0)

@@ -20,16 +20,25 @@ public class Main {
 
     private static native void CheckOverlayPermission(Context context);
 
+    private static Menu menu;
+
     public static void StartWithoutPermission(Context context) {
         CrashHandler.init(context, true);
         if (context instanceof Activity) {
             //Check if context is an Activity.
-            Menu menu = new Menu(context);
+            menu = new Menu(context);
             menu.SetWindowManagerActivity();
             menu.ShowMenu();
         } else {
             //Anything else, ask for permission
             CheckOverlayPermission(context);
+        }
+    }
+
+    public static void ReloadFeatures()
+    {
+        if (menu != null) {
+            menu.ReloadFeatures();
         }
     }
 
