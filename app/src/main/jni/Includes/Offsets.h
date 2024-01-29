@@ -87,6 +87,8 @@
 #define Entity_LoadCard_Offset "0x1DA6668"
 #define EntityBase_HasTag_Offset "0x1DB14F0"
 #define UpdateUtils_GetAndroidStoreUrl_Offset "0x1F1263C"
+#define Localization_GetLocaleName_Offset "0x33DA694"
+#define Localization_SetPegLocaleName_Offset "0x33DAB34"
 #define Unity_AndroidRenderOutsideSafeArea_Offset "0x144A1FD"
 #else
 
@@ -178,5 +180,7 @@
 #define Entity_LoadCard_Offset "0x1561A38"
 #define EntityBase_HasTag_Offset "0x156E628"
 #define UpdateUtils_GetAndroidStoreUrl_Offset "0x174AE48"
+#define Localization_GetLocaleName_Offset "0x33A14E4"
+#define Localization_SetPegLocaleName_Offset "0x33A1ABC"
 #define Unity_AndroidRenderOutsideSafeArea_Offset "0xFD29A5"
 #endif
