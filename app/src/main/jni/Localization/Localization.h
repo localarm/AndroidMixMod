@@ -36,7 +36,7 @@ typedef std::unordered_map<std::string, locale_map> localization_map;
 localization_map localization;
 
 locale_map enUS = localization["enUS"] = std::unordered_map<int, const char*>{
-	{ LANGUAGE, "-10_Spinner_Language_Use game language,English,Русский" },
+	{ LANGUAGE, "-10_Spinner_Language_Use game language,English,Русский,中文 (简体)" },
 	{ IGNORE_SCREEN_CUTOUTS, "-11_Toggle_Ignore screen cutouts"},
 	{ TIMESCALE_ENABLED, "0_Toggle_Timescale" },
 	{ TIMESCALE_IN_GAME_ONLY, "25_Toggle_Timescale only in game" },

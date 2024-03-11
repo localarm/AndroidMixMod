@@ -921,6 +921,10 @@ void Changes(JNIEnv *env, jclass clazz, jobject obj,
                     useDefaultLanguage = false;
                     language = "ruRU";
                     break;
+                case 3:
+                    useDefaultLanguage = false;
+                    language = "znCN";
+                    break;
             }
             break;
     }
