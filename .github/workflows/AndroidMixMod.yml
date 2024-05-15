@@ -33,7 +33,6 @@ jobs:
           dotnet-version: '6.0.x'
       - name: Install rust
         uses: actions-rust-lang/setup-rust-toolchain@v1
-
       - name: Install apkeep
         run: cargo install apkeep
       - name: Download hearthstone apk
@@ -41,7 +40,7 @@ jobs:
           repo_dir=$(pwd)
           mkdir ../downloads/
           cd ../downloads
-          old_apk_name=$(apkeep -a com.blizzard.wtcg.hearthstone -d google-play -e "${{ secrets.EMAIL }}" -t "${{ secrets.TOKEN }}" .)
+          old_apk_name=$(apkeep -a com.blizzard.wtcg.hearthstone -d google-play -e "${{ secrets.EMAIL }}" -t "${{ secrets.TOKEN }}" ./)
           apk_name=${old_apk_name/com.blizzard.wtcg.hearthstone_/HearthstoneMixMod_}
           mixmod_apk_name=${apk_name/Hearthstone_/HearthstoneMixMod_}
           mv ${old_apk_name} ${apk_name}
