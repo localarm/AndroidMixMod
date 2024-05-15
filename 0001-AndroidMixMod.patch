@@ -1,9 +1,8 @@
 From 6009869b1ed87bb0b0bf7b2ba9b1947b3069fe92 Mon Sep 17 00:00:00 2001
-Date: Wed, 15 May 2024 17:03:28 +0300
+Date: Wed, 10 May 2023 17:03:28 +0300
 Subject: [PATCH] AndroidMixMod
 
 ---
- AndroidManifest.xml                           |  2 ++
  apktool.yml                                   |  2 +-
  .../BasePackageValidator.smali                |  2 +-
  .../blizzard/wtcg/hearthstone/FileUtils.smali | 19 ++++++++++++++++++-
@@ -11,15 +10,6 @@ Subject: [PATCH] AndroidMixMod
  .../hearthstone/LoadingScreen.smali           | 22 ++++++++++++++++++++
  6 files changed, 50 insertions(+), 3 deletions(-)
 
-diff --git a/AndroidManifest.xml b/AndroidManifest.xml
-index 921a47a..8411f85 100644
---- a/AndroidManifest.xml
-+++ b/AndroidManifest.xml
-@@ -52,7 +52,9 @@
-+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
-     <application android:allowBackup="true" android:appComponentFactory="androidx.core.app.CoreComponentFactory" android:extractNativeLibs="true" android:fullBackupContent="@xml/appsflyer_backup_rules" android:icon="@mipmap/app_icon" android:label="@string/app_name" android:largeHeap="true" android:name="com.blizzard.wtcg.hearthstone.HearthstoneApplication" android:networkSecurityConfig="@xml/network_security_config" android:roundIcon="@mipmap/app_icon_round" android:supportsRtl="true" android:usesCleartextTraffic="true">
-+        <service android:name="com.android.support.Launcher" android:enabled="true" android:exported="false" android:stopWithTask="true" />
-         <meta-data android:name="com.blizzard.wtcg.hearthstone.Store" android:value="Google"/>
 diff --git a/apktool.yml b/apktool.yml
 index 5febeb8..efd4294 100644
 --- a/apktool.yml
@@ -123,4 +113,3 @@ index 949fbd8..1f639b3 100644
      .locals 14
 -- 
 2.40.1.windows.1
-
