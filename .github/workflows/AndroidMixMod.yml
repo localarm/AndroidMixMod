@@ -36,7 +36,7 @@ jobs:
       - name: Install apkeep
         run: cargo install apkeep
       - name: Install aapt
-        run: apt-get install aapt
+        run: sudo apt-get install aapt
       - name: Download hearthstone apk
         run: |
           repo_dir=$(pwd)
