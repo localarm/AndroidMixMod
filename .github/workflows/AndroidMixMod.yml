@@ -31,23 +31,27 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '6.0.x'
+      - name: Install rust
+        uses: actions-rust-lang/setup-rust-toolchain@v1
+      - name: Install apkeep
+        run: cargo install apkeep
+      - name: Install aapt
+        run: sudo apt-get install aapt
       - name: Download hearthstone apk
         run: |
           repo_dir=$(pwd)
           mkdir ../downloads/
-          cd ../downloads/
-          wget https://github.com/DeNcHiK3713/ApkCliDownloader/releases/latest/download/ApkCliDownloader-net6.0-linux-x64.zip -O ApkCliDownloader.zip
-          unzip ApkCliDownloader.zip -d ApkCliDownloader
-          chmod +x ./ApkCliDownloader/ApkCliDownloader
-          old_apk_name=$(./ApkCliDownloader/ApkCliDownloader -e "${{ secrets.EMAIL }}" -d ${{ secrets.DEVICE_ID }} -ua "${{ secrets.USER_AGENT }}" -c ${{ secrets.COUNTRY }} -t "${{ secrets.TOKEN }}" -a "com.blizzard.wtcg.hearthstone" -o ./)
+          cd ../downloads
+          apkeep -a com.blizzard.wtcg.hearthstone -d google-play -e "${{ secrets.EMAIL }}" -t "${{ secrets.TOKEN }}" .
+          old_apk_name=$(ls -Art | tail -n 1)
+          apk_version=$(aapt dump badging ${old_apk_name} | grep "versionName" | sed -e "s/.*versionName='//" -e "s/' .*//")
           apk_name=${old_apk_name/com.blizzard.wtcg.hearthstone_/HearthstoneMixMod_}
           mixmod_apk_name=${apk_name/Hearthstone_/HearthstoneMixMod_}
-          mv ${old_apk_name} ${apk_name}
           echo "apk_name=${apk_name}" >> $GITHUB_ENV
           echo "mixmod_apk_name=${mixmod_apk_name}" >> $GITHUB_ENV
           apk_folder_name=${apk_name%.*}
           echo "apk_folder_name=${apk_folder_name}" >> $GITHUB_ENV
-          echo "apk_version=${apk_folder_name#*_}" >> $GITHUB_ENV
+          echo "apk_version=${apk_version}" >> $GITHUB_ENV
           cd ${repo_dir}
       - name: Download Apktool
         run: wget https://github.com/iBotPeaches/Apktool/releases/download/v2.8.1/apktool_2.8.1.jar -O ../downloads/apktool.jar
@@ -56,10 +60,12 @@ jobs:
           repo_dir=$(pwd)
           cd ../downloads/
           java -jar apktool.jar d ${{ env.apk_name }} -o ${{ env.apk_folder_name }}
+          echo "ls"
           cd ${repo_dir}
       - name: Modify hearthstone apk
         run: |
           repo_dir=$(pwd)
+          echo env.apk_folder_name ${{ env.apk_folder_name }}
           cd ../downloads/${{ env.apk_folder_name }}/
           git apply ${repo_dir}/0001-AndroidMixMod.patch
           cd ${repo_dir}
