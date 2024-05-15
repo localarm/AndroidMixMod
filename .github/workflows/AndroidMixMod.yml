@@ -44,7 +44,7 @@ jobs:
           cd ../downloads
           apkeep -a com.blizzard.wtcg.hearthstone -d google-play -e "${{ secrets.EMAIL }}" -t "${{ secrets.TOKEN }}" .
           apk_name_raw=$(ls -Art | tail -n 1)
-          apk_version_raw=$(aapt dump badging ${old_apk_name})
+          apk_version_raw=$(aapt dump badging ${apk_name_raw})
           old_apk_name=${apk_name_raw}_${apk_version_raw}
           apk_name=${old_apk_name/com.blizzard.wtcg.hearthstone_/HearthstoneMixMod_}
           mixmod_apk_name=${apk_name/Hearthstone_/HearthstoneMixMod_}
