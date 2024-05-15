@@ -67,14 +67,11 @@ jobs:
           repo_dir=$(pwd)
           cd ../downloads/
           java -jar apktool.jar d ${{ env.apk_name }} -o ${{ env.apk_folder_name }}
-          echo env.apk_name_apk_folder_name = ${{ env.apk_name }} ${{ env.apk_folder_name }}
-          echo "ls"
           cd ${repo_dir}
       - name: Modify hearthstone apk
         run: |
           repo_dir=$(pwd)
-          echo env.apk_folder_name ${{ env.apk_folder_name }}
-          cd ../downloads/${{ env.apk_folder_name }}/
+          cd ../downloads/
           git apply ${repo_dir}/0001-AndroidMixMod.patch
           cd ${repo_dir}
       - name: Download Il2CppDumper
