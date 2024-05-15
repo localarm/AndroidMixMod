@@ -150,22 +150,12 @@ jobs:
           mkdir ../Release/
           java -jar apktool.jar b ${{ env.apk_folder_name }} -o ../Release/${{ env.mixmod_apk_name }}
           cd ${repo_dir}
-      - name: Signing hearthstone apk
-        uses: kevin-david/zipalign-sign-android-release@v1.1
-        id: sign_app
-        with:
-          releaseDirectory: ../Release/
-          signingKeyBase64: ${{ secrets.SIGNING_KEY }}
-          alias: ${{ secrets.ALIAS }}
-          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
-          keyPassword: ${{ secrets.KEY_PASSWORD }}
-          zipAlign: true
       - name: Prepare to release
         run: |
-          mkdir ../Release/signed/
-          mv ${{steps.sign_app.outputs.signedReleaseFile}} ../Release/signed/${{ env.mixmod_apk_name }}
+          mkdir ../Release/unsigned/
+          mv ../Release/${{ env.mixmod_apk_name }} ../Release/unsigned/${{ env.mixmod_apk_name }}
       - uses: "ncipollo/release-action@v1"
         with:
           tag: "${{ env.apk_version }}"
           name: "AndroidMixMod"
-          artifacts: "../Release/signed/${{ env.mixmod_apk_name }}"
+          artifacts: "../Release/unsigned/${{ env.mixmod_apk_name }}"
