@@ -28,10 +28,9 @@ jobs:
           ndk-version: r26
           local-cache: true
       - name: Install dotnet runtime
-        uses: awalsh128/cache-apt-pkgs-action@latest
+        uses: actions/setup-dotnet@v4
         with:
-          packages: dotnet-runtime-6.0
-          version: 1.0
+          dotnet-version: '6.0.x'
       - name: Download hearthstone apk
         run: |
           repo_dir=$(pwd)
