@@ -72,8 +72,7 @@ jobs:
       - name: Modify hearthstone apk
         run: |
           repo_dir=$(pwd)
-          cd ../downloads/${{ env.apk_folder_name }}
-          echo $(ls)
+          cd ../downloads/${{ env.apk_folder_name }}/
           git apply ${repo_dir}/0001-AndroidMixMod.patch
           cd ${repo_dir}
       - name: Download Il2CppDumper
