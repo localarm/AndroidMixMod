@@ -12,7 +12,7 @@ Subject: [PATCH] AndroidMixMod
  6 files changed, 50 insertions(+), 3 deletions(-)
 
 diff --git a/AndroidManifest.xml b/AndroidManifest.xml
-index 6927ef3..0aa1c50 100644
+index 921a47a..2c589ae 100644
 --- a/AndroidManifest.xml
 +++ b/AndroidManifest.xml
 @@ -52,7 +52,9 @@
