@@ -72,6 +72,7 @@ jobs:
         run: |
           repo_dir=$(pwd)
           cd ../downloads/
+          echo $(ls)
           git apply ${repo_dir}/0001-AndroidMixMod.patch
           cd ${repo_dir}
       - name: Download Il2CppDumper
