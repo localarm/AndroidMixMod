@@ -71,7 +71,7 @@ jobs:
       - name: Modify hearthstone apk
         run: |
           repo_dir=$(pwd)
-          cd ../downloads/
+          cd ../downloads/${{ env.apk_folder_name }}
           echo $(ls)
           git apply ${repo_dir}/0001-AndroidMixMod.patch
           cd ${repo_dir}
