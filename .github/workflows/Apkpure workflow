@@ -1,0 +1,15 @@
+name: Apkpure workflow
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: setup GO
+        uses: actions/setup-go@v5
+      - name: check apk versions
+        run: |
+          go get -u github.com/adamyordan/goapkpure/cmd/goapkpure
+          echo $(goapkpure -versions -package com.blizzard.wtcg.hearthstone)
