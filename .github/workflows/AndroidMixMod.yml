@@ -50,7 +50,7 @@ jobs:
           echo "mixmod_apk_name=${mixmod_apk_name}" >> $GITHUB_ENV
           apk_folder_name=HearthstoneMixMod_${apk_version}
           echo "apk_folder_name=${apk_folder_name}" >> $GITHUB_ENV
-          echo "apk_version=$apk_version}" >> $GITHUB_ENV
+          echo "apk_version=${apk_version}" >> $GITHUB_ENV
           cd ${repo_dir}
       - name: Download Apktool
         run: wget https://github.com/iBotPeaches/Apktool/releases/download/v2.8.1/apktool_2.8.1.jar -O ../downloads/apktool.jar
