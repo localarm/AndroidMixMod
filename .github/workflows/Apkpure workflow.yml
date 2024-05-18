@@ -11,7 +11,7 @@ jobs:
         uses: actions/setup-go@v5
       - name: check apk versions
         run: |
-          go env -w GO111MODULE=off
-          go get -u github.com/adamyordan/goapkpure/cmd/goapkpure
-          cd $HOME/go
+          go install -u github.com/adamyordan/goapkpure/cmd/goapkpure
+          cd $GOPATH/bin
+          echo "ls $(ls)"
           echo $(goapkpure -versions -package com.blizzard.wtcg.hearthstone)
