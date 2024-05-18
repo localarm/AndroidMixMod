@@ -11,6 +11,7 @@ jobs:
         uses: actions/setup-python@v5
       - name: check apk versions
         run: |
-          pip install selenium -i https://pypi.douban.com/simple
-          wget https://github.com/batrukanya/apkpure_download/raw/main/main.py
-          echo $(python .\main.py --PkgName com.blizzard.wtcg.hearthstone) 
+         git clone https://github.com/ko2sec/apkizer.git
+         pip3 install -r requirements.txt
+         echo $(python3 apkizer.py -p com.blizzard.wtcg.hearthstone) 
+        
