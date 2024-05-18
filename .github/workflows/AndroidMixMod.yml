@@ -43,6 +43,7 @@ jobs:
           repo_dir=$(pwd)
           mkdir ../downloads/
           cd ../downloads/
+          echo $(apkeep -l -a com.blizzard.wtcg.hearthstone .)
           apkeep -a com.blizzard.wtcg.hearthstone .
           raw_apk_name=$(ls -Art | tail -n 1)
           apk_version=$(aapt dump badging ${raw_apk_name} | grep "versionName" | sed -e "s/.*versionName='//" -e "s/' .*//")
