@@ -43,8 +43,8 @@ jobs:
           repo_dir=$(pwd)
           mkdir ../downloads/
           cd ../downloads/
-          apkeep -a com.blizzard.wtcg.hearthstone@29.4.199503 .
-          echo "ls " $(ls)
+          apkeep -a com.blizzard.wtcg.hearthstone .
+          echo "ls $(ls)"
           raw_apk_name=$(ls -Art | tail -n 1)
           apk_version=$(aapt dump badging ${raw_apk_name} | grep "versionName" | sed -e "s/.*versionName='//" -e "s/' .*//")
           apk_name=HearthstoneMixMod_${apk_version}.apk
