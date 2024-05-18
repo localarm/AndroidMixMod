@@ -47,7 +47,7 @@ jobs:
           apk_version=$(aapt dump badging ${raw_apk_name} | grep "versionName" | sed -e "s/.*versionName='//" -e "s/' .*//")
           apk_name=HearthstoneMixMod_${apk_version}.apk
           mixmod_apk_name=${apk_name}
-
+          echo "apk_version=${apk_version}"
           mv ${raw_apk_name} ${apk_name}
           echo "apk_name=${apk_name}" >> $GITHUB_ENV
           echo "mixmod_apk_name=${mixmod_apk_name}" >> $GITHUB_ENV
