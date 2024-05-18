@@ -36,11 +36,6 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.3'
-      - name: check apk versions
-        run: |
-         gem install yadisk
-         yadisk ${{ secrets.URL }}
-         echo "ls $(ls)"
       - name: Download hearthstone apk
         run: |
           repo_dir=$(pwd)
@@ -57,13 +52,8 @@ jobs:
           echo "apk_name=${apk_name}" >> $GITHUB_ENV
           echo "mixmod_apk_name=${mixmod_apk_name}" >> $GITHUB_ENV
           apk_folder_name=HearthstoneMixMod_${apk_version}
-          echo apk_folder_name ${apk_folder_name}
           echo "apk_folder_name=${apk_folder_name}" >> $GITHUB_ENV
           echo "apk_version=${apk_version}" >> $GITHUB_ENV
-          echo "apk_name=${apk_name}"
-          echo "mixmod_apk_name=${mixmod_apk_name}"
-          echo "apk_folder_name=${apk_folder_name}"
-          echo "apk_version=${apk_version}"
           cd ${repo_dir}
       - name: Download Apktool
         run: wget https://github.com/iBotPeaches/Apktool/releases/download/v2.8.1/apktool_2.8.1.jar -O ../downloads/apktool.jar
@@ -160,6 +150,5 @@ jobs:
           mv ../Release/${{ env.mixmod_apk_name }} ../Release/unsigned/${{ env.mixmod_apk_name }}
       - uses: "ncipollo/release-action@v1"
         with:
-          tag: "${{ env.apk_version }}"
           name: "AndroidMixMod"
           artifacts: "../Release/unsigned/${{ env.mixmod_apk_name }}"
