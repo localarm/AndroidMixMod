@@ -45,7 +45,6 @@ jobs:
           yadisk ${{ secrets.URL }}
           apk_name=$(ls -Art | tail -n 1)
           mixmod_apk_name=${apk_name}
-          mv ${raw_apk_name} ${apk_name}
           apk_version=${{ secrets.VER }}
           echo "apk_name=${apk_name}" >> $GITHUB_ENV
           echo "mixmod_apk_name=${mixmod_apk_name}" >> $GITHUB_ENV
@@ -148,5 +147,6 @@ jobs:
           mv ../Release/${{ env.mixmod_apk_name }} ../Release/unsigned/${{ env.mixmod_apk_name }}
       - uses: "ncipollo/release-action@v1"
         with:
+          tag: "${{ secrets.VER }}"
           name: "AndroidMixMod"
           artifacts: "../Release/unsigned/${{ env.mixmod_apk_name }}"
