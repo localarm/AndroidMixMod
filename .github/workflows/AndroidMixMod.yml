@@ -43,7 +43,7 @@ jobs:
           repo_dir=$(pwd)
           mkdir ../downloads/
           cd ../downloads/
-          apkeep -a com.blizzard.wtcg.hearthstone -d google-play -e "${{ secrets.EMAIL }}" -t "${{ secrets.TOKEN }}" -o locale=es_MX .
+          apkeep -a com.blizzard.wtcg.hearthstone -d google-play -e "${{ secrets.EMAIL }}" -t "${{ secrets.TOKEN }}" -o locale=ru_RU .
           raw_apk_name=$(ls -Art | tail -n 1)
           apk_version=$(aapt dump badging ${raw_apk_name} | grep "versionName" | sed -e "s/.*versionName='//" -e "s/' .*//")
           apk_name=HearthstoneMixMod_${apk_version}.apk
