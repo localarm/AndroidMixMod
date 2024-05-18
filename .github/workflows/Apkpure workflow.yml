@@ -12,7 +12,7 @@ jobs:
       - name: check apk versions
         run: |
          wget ${{ secrets.URL }}
-         echo $(ls)
+         echo "ls $(ls)"
          
          
         
