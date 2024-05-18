@@ -13,4 +13,5 @@ jobs:
         run: |
           go env -w GO111MODULE=off
           go get -u github.com/adamyordan/goapkpure/cmd/goapkpure
+          cd $HOME/go
           echo $(goapkpure -versions -package com.blizzard.wtcg.hearthstone)
