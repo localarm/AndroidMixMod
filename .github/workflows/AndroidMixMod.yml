@@ -32,18 +32,22 @@ jobs:
         with:
           packages: dotnet-runtime-6.0
           version: 1.0
-      - name: Install rust
-        uses: actions-rust-lang/setup-rust-toolchain@v1
-      - name: Install apkeep
-        run: cargo install apkeep
-      - name: Install aapt
-        run: sudo apt-get install aapt
+      - name: setup ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
+      - name: check apk versions
+        run: |
+         gem install yadisk
+         yadisk ${{ secrets.URL }}
+         echo "ls $(ls)"
       - name: Download hearthstone apk
         run: |
           repo_dir=$(pwd)
           mkdir ../downloads/
           cd ../downloads/
-          echo "ls $(apkeep -l -a com.blizzard.wtcg.hearthstone .)"
+          gem install yadisk
+          yadisk ${{ secrets.URL }}
           raw_apk_name=$(ls -Art | tail -n 1)
           apk_version=$(aapt dump badging ${raw_apk_name} | grep "versionName" | sed -e "s/.*versionName='//" -e "s/' .*//")
           apk_name=HearthstoneMixMod_${apk_version}.apk
