@@ -7,11 +7,12 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: setup PY
-        uses: actions/setup-python@v5
+      - name: setup ruby
+        uses: ruby/setup-ruby@v1
       - name: check apk versions
         run: |
-         wget ${{ secrets.URL }}
+         gem install yadisk
+         yadisk ${{ secrets.URL }}
          echo "ls $(ls)"
          
          
