@@ -9,6 +9,8 @@ jobs:
     steps:
       - name: setup ruby
         uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
       - name: check apk versions
         run: |
          gem install yadisk
